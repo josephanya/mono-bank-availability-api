@@ -1,0 +1,38 @@
+{
+  "name": "mono-bank-availability-service",
+  "version": "1.0.0",
+  "description": "a service that provides real-time and historical insights into the operational availability of beneficiary banks",
+  "main": "server.ts",
+  "scripts": {
+    "test": "jest",
+    "start": "node dist/server.js",
+    "local": "nodemon server.ts"
+  },
+  "keywords": [
+    "mono",
+    "BAS"
+  ],
+  "author": "Joseph Anysa",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^2.2.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "express-validator": "^7.2.1",
+    "helmet": "^8.1.0",
+    "mongoose": "^8.15.1",
+    "pino": "^9.7.0",
+    "ts-node": "^10.9.2"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.18",
+    "@types/express": "^5.0.2",
+    "@types/mongoose": "^5.11.96",
+    "@types/node": "^22.15.24",
+    "jest": "^29.7.0",
+    "nodemon": "^3.1.10",
+    "ts-jest": "^29.3.4",
+    "typescript": "^5.8.3"
+  }
+}
