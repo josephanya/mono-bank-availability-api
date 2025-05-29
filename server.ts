@@ -1,4 +1,5 @@
 import 'dotenv/config';
+// import './config/database.connect';
 
 import app from './app'
 import pino from 'pino';

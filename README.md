@@ -1,2 +1,2 @@
-# mono-bank-availability-service-api
+# mono-bank-availability-api
 
