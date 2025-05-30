@@ -1,15 +1,13 @@
 import mongoose from "mongoose";
-import pino from 'pino';
-
-const dbURI: string = process.env.DB_URL || '';
-
-const logger = pino();
+import { logger } from "../helpers/logger";
+import { config } from ".";
 
 export default (async () => {
     try {
-       await mongoose.connect(dbURI);
-       logger.info('connected to database')
+       await mongoose.connect(config.mongoUri);
+       logger.info('Connected to database')
     } catch (error) {
         logger.error(error)
+        process.exit(1);
     }
 })()

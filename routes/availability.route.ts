@@ -1,19 +1,22 @@
 import { Router } from "express";
 import AvailabilityController from "../controllers/availability.controller";
-import Authorization from "../middlewares/authorization.middleware";
+import { apiKeyAuth } from "../middlewares/authorization.middleware";
+import { validateTimeWindow } from "../middlewares/validation.middleware";
 
 const availabilityRoute = Router();
 
 availabilityRoute.get(
     '/availability',
-    // Authorization.apiKeyAuth,
-    AvailabilityController.getAllAvailability
+    apiKeyAuth,
+    validateTimeWindow,
+    AvailabilityController.getAllBanksAvailability
 );
 
 availabilityRoute.get(
     '/:bank_nip_code/availability',
-    // Authorization.apiKeyAuth,
-    AvailabilityController.getAvailability
+    apiKeyAuth,
+    validateTimeWindow,
+    AvailabilityController.getBankAvailability
 );
 
 export default availabilityRoute;
