@@ -1,3 +1,4 @@
+import { redisClient } from "../config/redis.connect";
 import { logger } from "../helpers/logger";
 import { TimeWindow } from "../interfaces/bank_availability.interface";
 import BankAvailability from "../models/bank_availability.model";
@@ -26,6 +27,11 @@ export default class ProcessingService {
                     { bank_nip_code: data.bank_nip_code, time_window: timeWindow },
                     record,
                     { upsert: true, new: true }
+                );
+                await redisClient.setEx(
+                    `bank_availability:${data.bank_nip_code}:${timeWindow}`,
+                    300,
+                    JSON.stringify(record)
                 );
             }
             logger.info(`Completed processing for time window: ${timeWindow}`);

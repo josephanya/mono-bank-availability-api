@@ -21,4 +21,6 @@ export const config = {
         low: parseInt(process.env.CONFIDENCE_LOW_THRESHOLD || '10'),
         medium: parseInt(process.env.CONFIDENCE_MEDIUM_THRESHOLD || '50')
     },
+
+    redisUrl: process.env.REDIS_URL
 };

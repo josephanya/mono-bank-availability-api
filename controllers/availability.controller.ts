@@ -4,6 +4,7 @@ import statusCode from "../helpers/status_codes"
 import BankAvailabilityService from "../services/availability.service";
 import { TimeWindow } from "../interfaces/bank_availability.interface";
 import { config } from '../config';
+import { redisClient } from "../config/redis.connect";
 
 class AvailabilityController {
     private bankAvailabilityService: BankAvailabilityService;
@@ -15,10 +16,19 @@ class AvailabilityController {
     getAllBanksAvailability = async (req: Request, res: Response, next: NextFunction) => {
         const window = req.query.window as TimeWindow || '1h';
         try {
+            const cacheData = await redisClient.get(`bank_availability:all:${window}`);
+            if (cacheData) {
+                return CustomResponse.success(res, statusCode.success, JSON.parse(cacheData), window);
+            }
             const records = await this.bankAvailabilityService.getAllBanksAvailability(window);
             if (records.length === 0) {
                 return CustomResponse.failure(res, statusCode.notFound, `No availability data found for time window: ${window}`)
             }
+            await redisClient.setEx(
+                `bank_availability:all:${window}`,
+                300,
+                JSON.stringify(records)
+            );
             const data = records.map(record => ({
                 bank_nip_code: record.bank_nip_code,
                 time_window: record.time_window,
@@ -39,10 +49,19 @@ class AvailabilityController {
             if (!config.monitoredBanks.includes(bank_nip_code)) {
                 return CustomResponse.failure(res, statusCode.notFound, 'Bank not found or not monitored')
             }
+            const cacheData = await redisClient.get(`bank_availability:${bank_nip_code}:${window}`);
+            if (cacheData) {
+                return CustomResponse.success(res, statusCode.success, JSON.parse(cacheData), window);
+            }
             const record = await this.bankAvailabilityService.getBankAvailability(window, bank_nip_code);
             if (!record) {
                 return CustomResponse.failure(res, statusCode.notFound, `No availability data found for bank ${bank_nip_code} in time window: ${window}`)
             }
+            await redisClient.setEx(
+                `bank_availability:${bank_nip_code}:${window}`,
+                300,
+                JSON.stringify(record)
+            );
             const data = {
                 bank_nip_code: record.bank_nip_code,
                 time_window: record.time_window,

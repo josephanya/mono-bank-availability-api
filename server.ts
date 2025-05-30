@@ -1,4 +1,4 @@
-import './config/database.connect';
+import './config/mongo.connect';
 
 import app from './app'
 import { logger } from './helpers/logger';
