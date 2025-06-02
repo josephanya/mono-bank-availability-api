@@ -1,4 +1,4 @@
-import './config/mongo.connect';
+import MongoClient from './config/mongo.connect';
 
 import app from './app'
 import { logger } from './helpers/logger';
@@ -10,6 +10,7 @@ const port = config.port;
 
 const startServer = async () => {
     try {
+        await MongoClient.connect();
         const server = app.listen(port, () => {
             logger.info(`Application started on port: ${port}`)
         });
@@ -32,6 +33,7 @@ const startServer = async () => {
         process.on('SIGTERM', () => shutdown('SIGTERM'));
     } catch (e) {
         logger.error('Failed to start server:', e);
+        console.log('Failed to start server:', e)
         process.exit(1);
     }
 }
