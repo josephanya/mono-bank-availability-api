@@ -53,6 +53,11 @@ npm run local
 npm start
 ```
 
+**Running with Docker**:
+```bash
+docker-compose up
+```
+
 The service will be available at `http://localhost:3000`
 
 ## 📊 API Documentation
