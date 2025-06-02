@@ -22,7 +22,7 @@ A microservice that monitors bank operational availability by analyzing transact
 
 1. **Clone and install dependencies**:
 ```bash
-git clone <repository-url>
+git clone https://github.com/josephanya/mono-bank-availability-api.git
 cd bank-availability-api
 npm install
 ```
